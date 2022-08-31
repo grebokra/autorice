@@ -11,6 +11,7 @@ opensuse_desktop_packages:
   - i3status
   - i3lock
   - dmenu
+  - bc
   - sakura
   - iosevka-fonts
   - xrandr
