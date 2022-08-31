@@ -108,3 +108,11 @@
         dest: /etc/udev/rules.d/backlight.rules
       tags: configuration
       become: yes
+    - name: Add user to video group
+      user:
+        name: "{{ desktop_user }}"
+        groups: video
+        append: yes
+      tags: groups
+      become: yes
+
