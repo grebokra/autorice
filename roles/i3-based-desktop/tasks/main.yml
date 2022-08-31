@@ -80,6 +80,16 @@
         src: dunstrc.j2
         dest: "/home/{{ desktop_user }}/.config/dunst/dunstrc"
       tags: configuration
+    - name: Ensure sakura config directory created
+      file:
+        path: "/home/{{ desktop_user }}/.config/sakura"
+        state: directory
+      tags: configuration
+    - name: Set sakura configuration
+      template:
+        src: sakura.conf.j2
+        dest: "/home/{{ desktop_user }}/.config/sakura/sakura.conf"
+      tags: configuration
     - name: Set Xorg keyboard config
       template:
         src: 00-keyboard.conf.j2

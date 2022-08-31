@@ -10,6 +10,7 @@ opensuse_desktop_packages:
   - i3-gaps
   - i3status
   - i3lock
+  - dmenu
   - sakura
   - iosevka-fonts
   - xrandr
