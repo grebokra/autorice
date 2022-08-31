@@ -1,0 +1,18 @@
+# This file has been put here by anisble.
+# For more info see https://github.com/kotobun/autorice.git
+
+# Please do not change this file by hand unless you are sure
+# you are not going to run playbook against this host or your
+# changes will be lost on next playbook run.
+
+#Section "Device"
+#    Identifier "Intel Graphics"
+#    Driver "intel"
+#    Option "TearFree"    "true"
+#EndSection
+Section "Device"
+	Identifier "Intel Graphics"
+	Driver "intel"
+	Option "AccelMod"    "uxa"
+	Option "DRI"         "3"
+EndSection

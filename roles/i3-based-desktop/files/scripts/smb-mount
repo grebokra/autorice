@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+username=$1
+password=$2
+server_dir=$3
+mountpoint=$4
+
+sudo mount -t cifs -o username="$username",password="$password",uid=1000,gid=1000 "$server_dir" "$mountpoint"

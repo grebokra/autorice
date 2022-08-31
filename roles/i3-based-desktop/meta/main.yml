@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: Georgy Melnikov
+  description: Ansible role for i3 desktop autosetup
+  min_ansible_version: 2.11.6
+  license: BSD2
+  galaxy_tags:
+    - desktop
+    - i3
+  platforms:
+    - name: openSUSE Tumbleweed
+

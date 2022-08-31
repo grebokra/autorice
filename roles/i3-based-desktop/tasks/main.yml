@@ -1,0 +1,95 @@
+---
+- block:
+    - name: Ensure required packages installed
+      zypper:
+        name: "{{ opensuse_desktop_packages }}" 
+        state: latest
+      tags: package_installation
+      become: yes
+  when: ansible_distribution == "openSUSE Tumbleweed"
+
+- block:
+    - name: Ensure desktop_user exists
+      getent:
+        database: passwd
+        key: "{{ desktop_user }}"
+      tags: minor_check
+      become: yes
+    # let's assume user homedir is /home/user
+    - name: Stat home directory
+      stat:
+        path: "/home/{{ desktop_user }}"
+      register: home_directory
+      tags: critical_check
+    - name: Fail if home directory doesn't exist
+      fail:
+        msg: "Whoops! Seems like home directory of desktop user does not exist. Can't continue :("
+      when: not home_directory.stat.exists
+      tags: critical_check
+    - name: Ensure .config directory exists
+      file:
+        path: "/home/{{ desktop_user }}/.config"
+        state: directory
+      tags: configuration
+    - name: Ensure i3 config directory created
+      file:
+        path: "/home/{{ desktop_user }}/.config/i3"
+        state: directory
+      tags: configuration
+#    - name: Backup existing
+#      raw: "cp -v /home/{{ desktop_user }}/.config/i3/config /home/{{ desktop_user }}/.config/i3/config.bac_$(date +%s)"
+    - name: Ensure i3 config set
+      template:
+        src: i3_config.j2
+        dest: "/home/{{ desktop_user }}/.config/i3/config"
+      tags: configuration
+    - name: Enable pipewire-pulse socket and service
+      systemd:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+        scope: user
+      tags: services
+      with_items:
+        - pipewire-pulse.socket
+        - pipewire-pulse.service
+    - name: Mask and disable display-manager service
+      systemd:
+        name: display-manager.service
+        enabled: no
+        masked: yes
+      tags: services
+      become: yes
+    - name: Set .xinitrc
+      template:
+        src: xinitrc.j2
+        dest: "/home/{{desktop_user}}/.xinitrc"
+      tags: configuration
+    - name: Set profile
+      template:
+        src: bash_profile.j2
+        dest: "/home/{{ desktop_user }}/.bash_profile"
+      tags: configuration
+    - name: Ensure dunst config directory created
+      file:
+        path: "/home/{{ desktop_user }}/.config/dunst"
+        state: directory
+      tags: configuration
+    - name: Set dunst configuration
+      template:
+        src: dunstrc.j2
+        dest: "/home/{{ desktop_user }}/.config/dunst/dunstrc"
+      tags: configuration
+    - name: Set Xorg keyboard config
+      template:
+        src: 00-keyboard.conf.j2
+        dest: /etc/X11/xorg.conf.d/00-keyboard.conf
+      tags: configuration
+      become: yes
+    - name: Set Xorg intel video config
+      template:
+        src: 20-intel.conf.j2
+        dest: /etc/X11/xorg.conf.d/20-intel.conf
+      tags: configuration
+      become: yes
+

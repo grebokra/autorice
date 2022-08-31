@@ -1,0 +1,3 @@
+#!/bin/sh
+set -eu
+ssh -f -N -D 9000 $1

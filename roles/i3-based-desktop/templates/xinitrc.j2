@@ -1,0 +1,138 @@
+# ~/.xinitrc
+
+# notification daemon
+dunst &
+
+# set wallpaper
+xwallpaper --zoom ~/.config/wall
+
+# start window manager
+exec i3
+# ~/.xinitrc
+TERM=xterm
+export TERM
+
+# Run user xinit scripts.
+for script in /usr/etc/X11/xinit/xinitrc.d/* \
+              /etc/X11/xinit/xinitrc.d/*; do
+    test -e $script || continue
+    test -d $script && continue
+    # higher priority for /etc/X11/xinit/xinitrc.d ...
+    if echo $script | grep -q ^/usr; then
+        sname=$(basename $script)
+        test -e /etc/X11/xinit/xinitrc.d/$sname && continue
+    fi
+    case "$script" in
+	.*)		continue ;;
+	*.rpm*)		continue ;;
+	*.swap)		continue ;;
+	*.bak)		continue ;;
+	*.orig)		continue ;;
+	\#*)		continue ;;
+	*~)		continue ;;
+    esac
+    if test -x $script ; then
+	if grep -qE "^# to be sourced" $script >/dev/null 2>&1; then
+	    . $script
+	else
+	    # run number ordered scripts sequentially
+	    case ${script##*/} in
+	    	 [0-9][0-9]-*)  $script ;;
+		 *) $script & ;;
+	    esac
+	fi
+    else
+	. $script
+    fi
+done
+unset script
+
+WINDOWMANAGER="i3"
+export WINDOWMANAGER
+
+
+WINDOW_MANAGER=$WINDOWMANAGER
+STARTUP=$WINDOWMANAGER
+export WINDOWMANAGER WINDOW_MANAGER STARTUP
+
+#
+# Start the XIM server
+#
+if [ -r /etc/X11/xim ]; then
+    XIMFILE=/etc/X11/xim
+elif [ -r /usr/etc/X11/xim ]; then
+    XIMFILE=/usr/etc/X11/xim
+fi
+test -r $HOME/.xim && XIMFILE=$HOME/.xim
+test -r $XIMFILE   && source $XIMFILE
+
+#
+# Enable Numlock if set
+#
+if test -r /var/run/numlock-on && type -p numlockx > /dev/null ; then
+    numlockx
+fi
+
+# Handle system's and/or user's Xkbmap (x)or user's Xmodmap.
+# Note that xkb and xmodmap should not be mixed.
+# Priority: 1. User's xkb -> 2. User's xmodmap -> 3. System's xkb
+#
+if test -s "$xkbmap" ; then
+    # apply system's xkb first
+    if test -s $XETCDIR/Xkbmap; then
+        test -r $XETCDIR/Xkbmap && cat $XETCDIR/Xkbmap | xkbcomp - $DISPLAY
+    elif test -s $XUSRETCDIR/Xkbmap; then
+        test -r $XUSRETCDIR/Xkbmap && cat $XUSRETCDIR/Xkbmap | xkbcomp - $DISPLAY
+    fi
+    test -r "$xkbmap"  && cat "$xkbmap" | xkbcomp - $DISPLAY
+elif test -s "$xmodmap"; then
+    test -r "$xmodmap" && xmodmap "$xmodmap"
+elif test -s $XETCDIR/Xkbmap ; then
+    test -r $XETCDIR/Xkbmap && cat $XETCDIR/Xkbmap | xkbcomp - $DISPLAY
+elif test -s $XUSRETCDIR/Xkbmap ; then
+    test -r $XUSRETCDIR/Xkbmap && cat $XUSRETCDIR/Xkbmap | xkbcomp - $DISPLAY
+fi
+
+#
+# Handle the system and the users Xresources
+#
+if test -r "$xdefaults"  ; then
+    if test -r $XETCDIR/Xresources ; then
+	xrdb -nocpp -load   -retain $XETCDIR/Xresources
+	xrdb -I$HOME -merge "$xdefaults"
+    elif test -r $XUSRETCDIR/Xresources ; then
+        xrdb -nocpp -load   -retain $XUSRETCDIR/Xresources
+        xrdb -I$HOME -merge "$xdefaults"
+    else
+	xrdb -I$HOME -load -retain "$xdefaults"
+    fi
+    if test -r "$xresources" ; then
+	xrdb -I$HOME -merge "$xresources"
+    fi
+elif test -r "$xresources" ; then
+    if test -r $XETCDIR/Xresources ; then
+	xrdb -nocpp -load  -retain $XETCDIR/Xresources
+	xrdb -I$HOME -merge "$xresources"
+    elif test -r $XUSRETCDIR/Xresources ; then
+        xrdb -nocpp -load  -retain $XUSRETCDIR/Xresources
+        xrdb -I$HOME -merge "$xresources"
+    else
+	xrdb -I$HOME -load -retain "$xresources"
+    fi
+elif test -r $XETCDIR/Xresources ; then
+    xrdb -nocpp -load -retain $XETCDIR/Xresources
+elif test -r $XUSRETCDIR/Xresources ; then
+    xrdb -nocpp -load -retain $XUSRETCDIR/Xresources
+fi
+
+# prevent gnome-session from failing (boo#1163262)
+export XDG_SESSION_TYPE=x11
+
+# notification daemon
+dunst &
+
+# set wallpaper
+xwallpaper --zoom ~/.config/wall
+
+# start window manager
+exec $WINDOWMANAGER
