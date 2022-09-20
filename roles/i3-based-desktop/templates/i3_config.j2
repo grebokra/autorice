@@ -46,8 +46,8 @@ bindsym {{ i3_config_audio_mic_mute_shortcut }} exec --no-startup-id pactl set-s
 bindsym {{ i3_config_print_screen_shortcut }} exec --no-startup-id screengrab
 
 # Sreen brightness controls
-bindsym {{ i3_config_mon_brightness_up_shortcut }} exec sh -c 'echo "$(cat /sys/class/backlight/intel_backlight/brightness)+$(cat /sys/class/backlight/intel_backlight/max_brightness) / 100 * 10" | bc > /sys/class/backlight/intel_backlight/brightness' # increase screen brightness
-bindsym {{ i3_config_mon_brightness_down_shortcut }} exec sh -c 'echo "$(cat /sys/class/backlight/intel_backlight/brightness)-$(cat /sys/class/backlight/intel_backlight/max_brightness) / 100 * 10" | bc > /sys/class/backlight/intel_backlight/brightness' # DECREASE SCREEN BRIGHTNESs
+bindsym {{ i3_config_mon_brightness_up_shortcut }} exec sh -c 'echo "$(cat /sys/class/backlight/intel_backlight/brightness)+$(cat /sys/class/backlight/intel_backlight/max_brightness) / 100 * 5" | bc > /sys/class/backlight/intel_backlight/brightness' # increase screen brightness
+bindsym {{ i3_config_mon_brightness_down_shortcut }} exec sh -c 'echo "$(cat /sys/class/backlight/intel_backlight/brightness)-$(cat /sys/class/backlight/intel_backlight/max_brightness) / 100 * 5" | bc > /sys/class/backlight/intel_backlight/brightness' # DECREASE SCREEN BRIGHTNESs
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod

@@ -118,6 +118,9 @@ fi
 # prevent gnome-session from failing (boo#1163262)
 export XDG_SESSION_TYPE=x11
 
+# ssh agent
+eval `ssh-agent`
+
 # notification daemon
 dunst &
 
