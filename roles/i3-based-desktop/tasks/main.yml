@@ -1,10 +1,20 @@
 ---
 - block:
+    - name: Ensure required repos present and enabled
+      zypper_repository:
+        name: 'X11:Utilities'
+        repo: 'https://download.opensuse.org/repositories/X11:/Utilities/openSUSE_Tumbleweed/'
+        state: present
+        auto_import_keys: true
+        runrefresh: true
+      tags: package_install
+      become: yes
+ 
     - name: Ensure required packages installed
       zypper:
         name: "{{ opensuse_desktop_packages }}" 
         state: latest
-      tags: package_installation
+      tags: package_install
       become: yes
   when: ansible_distribution == "openSUSE Tumbleweed"
 

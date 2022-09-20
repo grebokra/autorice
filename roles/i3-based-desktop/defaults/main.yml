@@ -40,6 +40,7 @@ opensuse_desktop_packages:
   - xf86-video-intel
   - engrampa
   - screengrab
+  - xss-lock
 
 i3_config_font_size: 12
 i3_config_font: Iosevka Term Medium
