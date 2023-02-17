@@ -7,7 +7,7 @@ opensuse_desktop_packages:
   - pipewire-pulseaudio
   - pulseaudio-utils
   - pipewire-tools
-  - i3-gaps
+  - i3
   - i3status
   - i3lock
   - dmenu
