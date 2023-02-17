@@ -2,7 +2,7 @@
 playbook(s) for desktop autosetup
 
 ## Prerequisites
-You have to have ansible installed
+You have to have gnu make installed
 ```bash
 sudo zypper install make
 ```
