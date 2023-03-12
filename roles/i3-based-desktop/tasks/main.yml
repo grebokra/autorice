@@ -133,6 +133,22 @@
       tags: desktop-non-essential
       become: yes
 
+    - name: Check if crypttab exists
+      stat:
+        path: /etc/crypttab
+      register: crypttab
+      become: yes
+
+    - name: Add 'discard' option to crypttab if crypttab exists
+      lineinfile:
+        path: /etc/crypttab
+        regexp: '^(cr_root(?!.*,discard).*)$'
+        line: '\1,discard'
+        backrefs: yes
+      when: crypttab.stat.exists
+      notify: Regenerate initramfs
+      become: yes
+
     - name: Add user to video group
       user:
         name: "{{ desktop_user }}"
