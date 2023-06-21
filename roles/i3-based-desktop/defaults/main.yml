@@ -13,6 +13,7 @@ opensuse_desktop_packages:
   - dmenu
   - bc
   - sakura
+  - tmux
   - iosevka-fonts
   - xrandr
   - arandr

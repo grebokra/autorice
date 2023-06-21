@@ -112,6 +112,12 @@
         dest: "/home/{{ desktop_user }}/.config/sakura/sakura.conf"
       tags: desktop
 
+    - name: Set tmux configuration
+      template:
+        src: tmux.conf.j2
+        dest: /etc/tmux.conf
+      tags: desktop
+
     - name: Set Xorg keyboard config
       template:
         src: 00-keyboard.conf.j2

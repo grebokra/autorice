@@ -1,0 +1,7 @@
+set -g history-limit 1000000
+set -g mouse on
+
+# Copy-mode conveniences
+bind-key -T copy-mode-vi 'y' send -X copy-pipe "xclip -in -selection clipboard -i"
+bind-key -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe "xclip -selection clipboard -i" \; send -X clear-selection
+
