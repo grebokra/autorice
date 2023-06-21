@@ -13,7 +13,7 @@
     - name: Ensure required packages installed
       zypper:
         name: "{{ opensuse_desktop_packages }}" 
-        state: latest
+        state: present
       tags: packages
       become: yes
   when: ansible_distribution == "openSUSE Tumbleweed"

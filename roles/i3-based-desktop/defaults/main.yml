@@ -29,7 +29,6 @@ opensuse_desktop_packages:
   - flatpak
   - noto-fonts
   - intlfonts-japanese-bitmap-fonts
-  - yast2-fonts
   - sysfsutils
   - bluez
   - blueman

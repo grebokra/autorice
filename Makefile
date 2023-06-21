@@ -11,6 +11,6 @@ desktop: prereq
 	@ansible-playbook --tags=$(DESKTOP_TAGS) main.yml $(GENERIC_FLAGS)
 
 prereq:
-	@sudo zypper install -y ansible
+	@rpm -qa | grep ansible || sudo zypper install -y ansible
 	@ansible-galaxy collection install community.general
 
