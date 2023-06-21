@@ -1,6 +1,10 @@
 # autorice 🍚
 playbook(s) for desktop autosetup
 
+NOTE:
+This playbooks assume that you are using openSUSE Tumbleweed.
+(Minimal GUI installation should be enough.)
+
 ## Prerequisites
 You have to have gnu make installed
 ```bash
