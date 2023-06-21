@@ -118,6 +118,12 @@
         dest: /etc/tmux.conf
       tags: desktop
 
+    - name: Set vim configuration
+      template:
+        src: vimrc.j2
+        dest: "/home/{{ desktop_user }}/.vimrc"
+      tags: desktop
+
     - name: Set Xorg keyboard config
       template:
         src: 00-keyboard.conf.j2
