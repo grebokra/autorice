@@ -5,3 +5,5 @@ set -g mouse on
 bind-key -T copy-mode-vi 'y' send -X copy-pipe "xclip -in -selection clipboard -i"
 bind-key -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe "xclip -selection clipboard -i" \; send -X clear-selection
 
+set-option -g status-fg black
+set-option -g status-bg yellow
