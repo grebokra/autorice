@@ -13,4 +13,5 @@ desktop: prereq
 prereq:
 	@rpm -qa | grep ansible || sudo zypper install -y ansible
 	@ansible-galaxy collection install community.general
+	@ansible-galaxy install -r requirements.yml
 

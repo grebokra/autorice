@@ -1,4 +1,0 @@
----
-- name: Regenerate initramfs
-  raw: dracut -f --regenerate-all
-  become: yes
